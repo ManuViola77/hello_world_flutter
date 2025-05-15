@@ -180,7 +180,42 @@ class SearchPage extends StatelessWidget {
         title: const Text('Buscar'),
         backgroundColor: Colors.blue,
       ),
-      body: Container(color: Colors.blue),
+      body: Container(
+        color: Colors.blue,
+        child: Center(
+          child: MaterialButton(
+            onPressed: () => _openAnimatedDialog(context),
+            height: 50,
+            color: Colors.purple,
+            child: const Text('Mostrar Dialogo', style: TextStyle(color: Colors.white)),
+          )
+        )
+      ),
+    );
+  }
+
+  void _openAnimatedDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.black87.withOpacity(0.25),
+      barrierDismissible: true,
+      barrierLabel: 'Dialogo',
+      pageBuilder: (context, animation, secondaryAnimation) => Container(),
+      transitionDuration: const Duration(milliseconds: 400),
+      transitionBuilder: (context, a1, a2, widget) => ScaleTransition(
+        scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+        child: AlertDialog(
+          backgroundColor: Colors.deepPurple,
+          titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          contentTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          title: Text('Hola'),
+          content: Text('Soy Manu Genia'),
+          shape: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+        )
+      )
     );
   }
 }
@@ -211,7 +246,7 @@ class FavoritesPage extends StatelessWidget {
             child: const Text('Mostrar BottomSheet', style: TextStyle(color: Colors.white)),
           )
         )
-        ),
+      ),
     );
   }
 
