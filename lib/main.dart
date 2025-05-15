@@ -29,13 +29,7 @@ class BottomTabs extends StatefulWidget {
 
 class _BottomTabsState extends State<BottomTabs> {
   int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomePage(),
-    const SearchPage(),
-    const FavoritesPage(),
-    const ProfilePage(),
-  ];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -45,7 +39,15 @@ class _BottomTabsState extends State<BottomTabs> {
   
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      HomePage(scaffoldKey: _scaffoldKey),
+      SearchPage(scaffoldKey: _scaffoldKey),
+      FavoritesPage(scaffoldKey: _scaffoldKey),
+      ProfilePage(scaffoldKey: _scaffoldKey),
+    ];
+
     return Scaffold(
+      key: _scaffoldKey,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Theme(
         data: ThemeData(
@@ -146,11 +148,13 @@ class _BottomTabsState extends State<BottomTabs> {
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color backgroundColor;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const CustomAppBar({
     super.key,
     required this.title,
     required this.backgroundColor,
+    required this.scaffoldKey,
   });
 
   @override
@@ -159,7 +163,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.menu),
         onPressed: () {
-          Scaffold.of(context).openDrawer();
+          scaffoldKey.currentState?.openDrawer();
         },
       ),
       title: Text(
@@ -178,14 +182,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const HomePage({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Inicio',
         backgroundColor: Colors.red,
+        scaffoldKey: scaffoldKey,
       ),
       body: Container(color: Colors.red),
     );
@@ -193,14 +200,17 @@ class HomePage extends StatelessWidget {
 }
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const SearchPage({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Buscar',
         backgroundColor: Colors.blue,
+        scaffoldKey: scaffoldKey,
       ),
       body: Container(
         color: Colors.blue,
@@ -243,14 +253,17 @@ class SearchPage extends StatelessWidget {
 }
 
 class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const FavoritesPage({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Favoritos',
         backgroundColor: Colors.green,
+        scaffoldKey: scaffoldKey,
       ),
       body: Container(
         color: Colors.green,
@@ -314,23 +327,25 @@ class FavoritesPage extends StatelessWidget {
 }
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const ProfilePage({super.key, required this.scaffoldKey});
 
   @override
   State<ProfilePage> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<ProfilePage> {
-  String _dropdownValue =  '1';
-
+  String _dropdownValue = '1';
   var _items = ['1', '2', '3', '4', '5'];
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: 'Perfil',
         backgroundColor: Colors.purple,
+        scaffoldKey: widget.scaffoldKey,
       ),
       body: Container(
         color: Colors.purple,
