@@ -201,7 +201,63 @@ class FavoritesPage extends StatelessWidget {
         title: const Text('Favoritos'),
         backgroundColor: Colors.green,
       ),
-      body: Container(color: Colors.green),
+      body: Container(
+        color: Colors.green,
+        child: Center(
+          child: MaterialButton(
+            onPressed: () => _displayBottomSheet(context),
+            height: 50,
+            color: Colors.purple,
+            child: const Text('Mostrar BottomSheet', style: TextStyle(color: Colors.white)),
+          )
+        )
+        ),
+    );
+  }
+
+  Future _displayBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.black87.withOpacity(0.25),
+      // isDismissible: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      builder: (context) => Container(
+        width: double.infinity,
+        height: 200,
+        decoration: const BoxDecoration(
+          color: Colors.pink,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(30),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Manu Genia',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
