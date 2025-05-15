@@ -206,7 +206,7 @@ class HomePage extends StatelessWidget {
                 indicatorColor: Colors.white,
                 tabs: const [
                   Tab(icon: Icon(Icons.today)),
-                  Tab(icon: Icon(Icons.directions_transit)),
+                  Tab(icon: Icon(Icons.format_list_numbered)),
                   Tab(icon: Icon(Icons.directions_bike)),
                   Tab(icon: Icon(Icons.directions_car)),
                   Tab(icon: Icon(Icons.directions_transit)),
@@ -223,7 +223,7 @@ class HomePage extends StatelessWidget {
               child: TabBarView(
                 children: [
                   CalendarPage(),
-                  Container(color: Colors.lightBlue),
+                  StepperPage(),
                   Container(color: Colors.green),
                   Container(color: Colors.indigo),
                   Container(color: Colors.blue),
@@ -296,6 +296,105 @@ class _CalendarPageState extends State<CalendarPage> {
         _timeOfDay = pickedTime;
       });
     }
+  }
+}
+
+class StepperPage extends StatefulWidget {
+  const StepperPage({super.key});
+
+  @override
+  State<StepperPage> createState() => _StepperPageState();
+}
+
+class _StepperPageState extends State<StepperPage> {
+  int _currentStep = 0;
+  
+  List<Step> stepList() => [
+    Step(
+      isActive: _currentStep >= 0, 
+      state: _currentStep <= 0 ? StepState.editing : StepState.complete,
+      title: const Text('Step 1'), 
+      content: Column(
+        children: [
+          Text('Step 1 content'),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Nombre',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Apellido',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ]
+      )
+    ),
+    Step(
+      isActive: _currentStep >= 1, 
+      state: _currentStep <= 1 ? StepState.editing : StepState.complete,
+      title: const Text('Step 2'), 
+      content: Column(
+        children: [
+          Text('Step 2 content'),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Direccion',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Telefono',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ]
+      )
+    ),
+    Step(
+      isActive: _currentStep >= 2, 
+      state:  _currentStep <= 2 ? StepState.editing : StepState.complete,
+      title: const Text('Step 3'), 
+      content: const Center(child: Text('Step 3 content'))
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.lightBlue,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.lightBlue,
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+        ),
+        child: Stepper(
+          steps: stepList(),
+          type: StepperType.horizontal,
+          elevation: 0, // la raya de abajo que no se muestre
+          currentStep: _currentStep,
+          onStepContinue: () {
+            if(_currentStep < (stepList().length - 1)) {
+              setState(() => _currentStep++);
+            }
+          },
+          onStepCancel: () {
+            if(_currentStep > 0) {
+              setState(() => _currentStep--);
+            }
+          },
+          onStepTapped: (step) => setState(() => _currentStep = step),
+        ),
+      ),
+    );
   }
 }
 
