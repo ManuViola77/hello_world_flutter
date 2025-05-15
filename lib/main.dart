@@ -194,7 +194,50 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.red,
         scaffoldKey: scaffoldKey,
       ),
-      body: Container(color: Colors.red),
+      body: DefaultTabController(
+        length: 10,
+        child: Column(
+          children: [
+            Container(
+              color: Colors.red,
+              child: TabBar(
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                indicatorColor: Colors.white,
+                tabs: const [
+                  Tab(icon: Icon(Icons.directions_car)),
+                  Tab(icon: Icon(Icons.directions_transit)),
+                  Tab(icon: Icon(Icons.directions_bike)),
+                  Tab(icon: Icon(Icons.directions_car)),
+                  Tab(icon: Icon(Icons.directions_transit)),
+                  Tab(icon: Icon(Icons.directions_bike)),
+                  Tab(icon: Icon(Icons.directions_car)),
+                  Tab(icon: Icon(Icons.directions_transit)),
+                  Tab(icon: Icon(Icons.directions_bike)),
+                  Tab(icon: Icon(Icons.directions_car)),
+                ],
+                isScrollable: true,
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Container(color: Colors.yellow),
+                  Container(color: Colors.blue),
+                  Container(color: Colors.green),
+                  Container(color: Colors.yellow),
+                  Container(color: Colors.blue),
+                  Container(color: Colors.green),
+                  Container(color: Colors.yellow),
+                  Container(color: Colors.blue),
+                  Container(color: Colors.green),
+                  Container(color: Colors.yellow),
+                ]
+              )
+            )
+          ],
+        )
+      ),
     );
   }
 }
