@@ -89,81 +89,57 @@ class _BottomTabsState extends State<BottomTabs> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.purple,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/images/profile.jpeg'),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Mi Aplicación',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Inicio'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 0;
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('Buscar'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 1;
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text('Favoritos'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 2;
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Perfil'),
-              onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 3;
-                });
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configuración'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            _buildHeader(),
+            _buildItem(icon: Icons.home, title: 'Inicio', onTap: () => _handlerDrawerItemTap(0)),
+            _buildItem(icon: Icons.search, title: 'Buscar', onTap: () => _handlerDrawerItemTap(1)),
+            _buildItem(icon: Icons.favorite, title: 'Favoritos', onTap: () => _handlerDrawerItemTap(2)),
+            _buildItem(icon: Icons.person, title: 'Perfil', onTap: () => _handlerDrawerItemTap(3)),
+             const Divider(),
+            _buildItem(icon: Icons.settings, title: 'Configuración', onTap: () => Navigator.pop(context)),
+            _buildItem(icon: Icons.logout, title: 'Cerrar Sesión', onTap: () => Navigator.pop(context)),
           ],
         ),
       ),
     );
+  }
+
+  _buildHeader() {
+    return DrawerHeader(
+      decoration: BoxDecoration(
+        color: Colors.purple,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundImage: AssetImage('assets/images/profile.jpeg'),
+          ),
+          SizedBox(height: 10),
+          Text(
+            'Mi Aplicación',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildItem({required IconData icon, required String title, required GestureTapCallback onTap}) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
+
+  _handlerDrawerItemTap(int index) {
+     Navigator.pop(context);
+    _onItemTapped(index);
   }
 }
 
