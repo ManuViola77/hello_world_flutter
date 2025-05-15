@@ -205,7 +205,7 @@ class HomePage extends StatelessWidget {
                 unselectedLabelColor: Colors.black,
                 indicatorColor: Colors.white,
                 tabs: const [
-                  Tab(icon: Icon(Icons.directions_car)),
+                  Tab(icon: Icon(Icons.today)),
                   Tab(icon: Icon(Icons.directions_transit)),
                   Tab(icon: Icon(Icons.directions_bike)),
                   Tab(icon: Icon(Icons.directions_car)),
@@ -222,16 +222,16 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  Container(color: Colors.yellow),
+                  CalendarPage(),
+                  Container(color: Colors.lightBlue),
+                  Container(color: Colors.green),
+                  Container(color: Colors.indigo),
                   Container(color: Colors.blue),
                   Container(color: Colors.green),
-                  Container(color: Colors.yellow),
+                  Container(color: Colors.lightBlue),
                   Container(color: Colors.blue),
                   Container(color: Colors.green),
-                  Container(color: Colors.yellow),
-                  Container(color: Colors.blue),
-                  Container(color: Colors.green),
-                  Container(color: Colors.yellow),
+                  Container(color: Colors.cyan),
                 ]
               )
             )
@@ -239,6 +239,63 @@ class HomePage extends StatelessWidget {
         )
       ),
     );
+  }
+}
+
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
+  @override
+  State<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  TimeOfDay _timeOfDay = TimeOfDay.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.teal,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '${_timeOfDay.hour.toString().padLeft(2, '0')}:${_timeOfDay.minute.toString().padLeft(2, '0')}',
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              )
+            ),
+            const SizedBox(height: 20),
+            MaterialButton(
+              onPressed: () => _selectTime(context),
+              height: 50,
+              color: Colors.purple,
+              child: const Text(
+                'Mostrar Time Picker',
+                style: TextStyle(color: Colors.white)
+              ),
+            )
+          ]
+        )
+      )
+    );
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _timeOfDay,
+    );
+    
+    if(pickedTime != null) {
+      setState(() {
+        _timeOfDay = pickedTime;
+      });
+    }
   }
 }
 
