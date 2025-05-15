@@ -143,20 +143,48 @@ class _BottomTabsState extends State<BottomTabs> {
   }
 }
 
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final Color backgroundColor;
+
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: backgroundColor,
+      foregroundColor: Colors.white,
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        title: const Text('Inicio'),
+      appBar: const CustomAppBar(
+        title: 'Inicio',
         backgroundColor: Colors.red,
       ),
       body: Container(color: Colors.red),
@@ -170,14 +198,8 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        title: const Text('Buscar'),
+      appBar: const CustomAppBar(
+        title: 'Buscar',
         backgroundColor: Colors.blue,
       ),
       body: Container(
@@ -226,14 +248,8 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        title: const Text('Favoritos'),
+      appBar: const CustomAppBar(
+        title: 'Favoritos',
         backgroundColor: Colors.green,
       ),
       body: Container(
@@ -302,23 +318,6 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfileState();
-
-  /* @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        title: const Text('Perfil'),
-        backgroundColor: Colors.purple,
-      ),
-      body: Container(color: Colors.purple),
-    );
-  } */
 }
 
 class _ProfileState extends State<ProfilePage> {
@@ -329,14 +328,8 @@ class _ProfileState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        title: const Text('Perfil'),
+      appBar: const CustomAppBar(
+        title: 'Perfil',
         backgroundColor: Colors.purple,
       ),
       body: Container(
