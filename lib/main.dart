@@ -297,10 +297,13 @@ class FavoritesPage extends StatelessWidget {
   }
 }
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
+  State<ProfilePage> createState() => _ProfileState();
+
+  /* @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -314,6 +317,67 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.purple,
       ),
       body: Container(color: Colors.purple),
+    );
+  } */
+}
+
+class _ProfileState extends State<ProfilePage> {
+  String _dropdownValue =  '1';
+
+  var _items = ['1', '2', '3', '4', '5'];
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+        title: const Text('Perfil'),
+        backgroundColor: Colors.purple,
+      ),
+      body: Container(
+        color: Colors.purple,
+        child:Center(
+          child: Container(
+            width: 150,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Color(0xffEBEDFE),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: DropdownButton<String>(
+                items: _items.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item),
+                  );
+                }).toList(),
+                value: _dropdownValue,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _dropdownValue = newValue!;
+                  });
+                },
+                icon: const Icon(Icons.keyboard_arrow_down),
+                iconSize: 50,
+                iconEnabledColor: Colors.purple,
+                iconDisabledColor: Colors.purple.withOpacity(0.5),
+                style: const TextStyle(
+                  color: Colors.purple,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+                underline: Container(),
+              )
+            )
+          )
+        )
+      )
     );
   }
 }
