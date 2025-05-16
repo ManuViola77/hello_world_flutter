@@ -207,7 +207,7 @@ class HomePage extends StatelessWidget {
                 tabs: const [
                   Tab(icon: Icon(Icons.today)),
                   Tab(icon: Icon(Icons.format_list_numbered)),
-                  Tab(icon: Icon(Icons.directions_bike)),
+                  Tab(icon: Icon(Icons.notes)),
                   Tab(icon: Icon(Icons.directions_car)),
                   Tab(icon: Icon(Icons.directions_transit)),
                   Tab(icon: Icon(Icons.directions_bike)),
@@ -224,7 +224,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   CalendarPage(),
                   StepperPage(),
-                  Container(color: Colors.green),
+                  DismissibleList(),
                   Container(color: Colors.indigo),
                   Container(color: Colors.blue),
                   Container(color: Colors.green),
@@ -394,6 +394,103 @@ class _StepperPageState extends State<StepperPage> {
           onStepTapped: (step) => setState(() => _currentStep = step),
         ),
       ),
+    );
+  }
+}
+
+class DismissibleList extends StatefulWidget {
+  const DismissibleList({super.key});
+
+  @override
+  State<DismissibleList> createState() => _DismissibleListState();
+}
+
+class _DismissibleListState extends State<DismissibleList> {
+  final List<String> _items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.green,
+      child: ListView.builder(
+        itemCount: _items.length,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        itemBuilder: (context, index) {
+          return Dismissible(
+            onDismissed: (direction) {
+              setState(() {
+                _items.removeAt(index);
+              });
+            },
+            confirmDismiss: (direction) async {
+              if(direction == DismissDirection.startToEnd) {
+                return await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Eliminar'),
+                    content: Text('¿Estás seguro de querer eliminar este item?'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context, true), child: Text('Si')),
+                      TextButton(onPressed: () => Navigator.pop(context, false), child: Text('No')),
+                    ],
+                  )
+                );
+              } else {
+                return await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Guardar'),
+                    content: Text('¿Estás seguro de querer guardar este item?'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context, true), child: Text('Si')),
+                      TextButton(onPressed: () => Navigator.pop(context, false), child: Text('No')),
+                    ],
+                  )
+                );
+              }
+            },
+            background: Container(
+              color: Colors.red,
+              height: 50,
+              margin: const EdgeInsets.only(top: 10),
+              child: const Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Icon(Icons.delete, color: Colors.white),
+                ),
+              ),
+            ),
+            secondaryBackground: Container(
+              color: Colors.pink,
+              height: 50,
+              margin: const EdgeInsets.only(top: 10),
+              child: const Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Icon(Icons.check, color: Colors.white),
+                ),
+              ),
+            ),
+            key: ValueKey<String>(_items[index]),
+            child: Container(
+              color: Colors.white,
+              margin: const EdgeInsets.only(top: 10),
+              height: 50,
+              child: Center(
+                child: Text(
+                  _items[index],
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              )
+            )
+          );
+        },
+      )
     );
   }
 }
